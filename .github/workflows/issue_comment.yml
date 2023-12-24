@@ -1,28 +1,31 @@
-name: Create a comment on new issues
+name: Create a comment on new issue from workflow
 
 on:
-   issues:
-     types: [opened]
+  issues:
+    types: [opened, closed]
 
 jobs:
-  commment-with-action:
+  comment-with-actions:
     runs-on: ubuntu-latest
     steps:
-      - name: "dump github context"
-        run: echo '${{ toJSON(github.event) }}' | jq
+      - name: Dump GitHub context
+        run: echo '${{ toJSON(github) }}' | jq
         shell: bash
+
+      - name: Dump job context
+        run: echo '${{ secrets.MY_TOKEN }}'
+        shell: bash
+
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-               This is a multi-line test comment
-               - With GitHub **Markdown** :sparkles:
-               - Created by [create-or-update-comment][1]
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
 
-                [1]: https://github.com/peter-evans/create-or-update-comment
+            [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
-  
-            
-
-               
+        env:
+          GH_TOKEN: ${{ secrets.MY_TOKEN }}
