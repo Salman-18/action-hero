@@ -13,11 +13,11 @@ jobs:
         shell: bash
 
       - name: Dump job context
-        run: echo '${{ secrets.MY_TOKEN }}'
+        run: echo '${{ secrets.GITHUB_TOKEN }}'
         shell: bash
 
       - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v3
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -28,4 +28,4 @@ jobs:
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
         env:
-          GH_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
